@@ -19,7 +19,7 @@ const fetcher = async (url: string, options: IRequestOptions, errorMessage: stri
 };
 
 class AuthApi {
-  static url = 'https://api.themoviedb.org';
+  private static url: 'https://api.themoviedb.org';
 
   private static getRequestToken = async () => {
     const { request_token: reqToken } = await fetcher(

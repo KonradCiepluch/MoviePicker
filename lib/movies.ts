@@ -16,7 +16,7 @@ const fetcher = async <T>(url: string, errorReturnValue: [] | {} = []) => {
 };
 
 class MoviesResouce {
-  static url = 'https://api.themoviedb.org/3';
+  private static url = 'https://api.themoviedb.org/3';
 
   static getPopularMovies = () => fetcher<IMovie[]>(`${this.url}/movie/popular?api_key=${process.env.apiKey}`);
 
