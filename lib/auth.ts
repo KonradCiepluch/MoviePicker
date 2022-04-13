@@ -19,11 +19,11 @@ const fetcher = async (url: string, options: IRequestOptions, errorMessage: stri
 };
 
 class AuthApi {
-  private static url: 'https://api.themoviedb.org';
+  private static url = 'https://api.themoviedb.org';
 
   private static getRequestToken = async () => {
     const { request_token: reqToken } = await fetcher(
-      `${this.url}/4/auth/request_token`,
+      `${AuthApi.url}/4/auth/request_token`,
       {
         method: 'post',
         headers: { 'Content-type': 'application/json;charset=utf-8', Authorization: `Bearer ${process.env.apiV4Key}` },
@@ -38,7 +38,7 @@ class AuthApi {
 
   private static getAccessToken = async (reqToken: string) => {
     const { access_token: accessToken, account_id: accountId } = await fetcher(
-      `${this.url}/4/auth/access_token`,
+      `${AuthApi.url}/4/auth/access_token`,
       {
         method: 'post',
         body: JSON.stringify({ request_token: reqToken }),
@@ -52,7 +52,7 @@ class AuthApi {
 
   private static getSessionId = async (accessToken: string) => {
     const { session_id: sessionId } = await fetcher(
-      `${this.url}/3/authentication/session/convert/4?api_key=${process.env.apiKey}`,
+      `${AuthApi.url}/3/authentication/session/convert/4?api_key=${process.env.apiKey}`,
       {
         method: 'post',
         body: JSON.stringify({ access_token: accessToken }),
@@ -66,13 +66,13 @@ class AuthApi {
 
   static authenticateUser = async () => {
     try {
-      const reqToken = await this.getRequestToken();
+      const reqToken = await AuthApi.getRequestToken();
 
       alert('Confirm authentication');
 
-      const { accessToken, accountId } = await this.getAccessToken(reqToken);
+      const { accessToken, accountId } = await AuthApi.getAccessToken(reqToken);
 
-      const sessionId = await this.getSessionId(accessToken);
+      const sessionId = await AuthApi.getSessionId(accessToken);
 
       const user = { accessToken, accountId, sessionId } as IUser;
 
@@ -89,7 +89,7 @@ class AuthApi {
   static getUserDetails = async (id: string) => {
     try {
       const { id: userId, username } = await fetcher(
-        `${this.url}/3/account?api_key=${process.env.apiKey}&session_id=${id}`,
+        `${AuthApi.url}/3/account?api_key=${process.env.apiKey}&session_id=${id}`,
         { method: 'get' },
         'Unable to get user details'
       );
@@ -103,7 +103,7 @@ class AuthApi {
   static getFavouriteMovies = async (accountId: number, sessionId: string) => {
     try {
       const { results } = await fetcher(
-        `${this.url}/3/account/${accountId}/favorite/movies?api_key=${process.env.apiKey}&session_id=${sessionId}`,
+        `${AuthApi.url}/3/account/${accountId}/favorite/movies?api_key=${process.env.apiKey}&session_id=${sessionId}`,
         {
           method: 'get',
         },
@@ -119,7 +119,7 @@ class AuthApi {
   static toggleFavouriteMovie = async ({ id, favorite, userId, sessionId }: { id: number; favorite: boolean; userId: number; sessionId: string }) => {
     try {
       await fetcher(
-        `${this.url}/3/account/${userId}/favorite?api_key=${process.env.apiKey}&session_id=${sessionId}`,
+        `${AuthApi.url}/3/account/${userId}/favorite?api_key=${process.env.apiKey}&session_id=${sessionId}`,
         {
           method: 'post',
           body: JSON.stringify({ media_type: 'movie', media_id: id, favorite }),
@@ -144,10 +144,10 @@ class AuthApi {
 
   static signOutUser = async () => {
     try {
-      const { accessToken, sessionId } = this.getUserFromCookies();
+      const { accessToken, sessionId } = AuthApi.getUserFromCookies();
 
       await fetcher(
-        `${this.url}/3/authentication/session?api_key=${process.env.apiKey}`,
+        `${AuthApi.url}/3/authentication/session?api_key=${process.env.apiKey}`,
         {
           method: 'delete',
           headers: { 'Content-type': 'application/json;charset=utf-8' },
@@ -157,7 +157,7 @@ class AuthApi {
       );
 
       await fetcher(
-        `${this.url}/4/auth/access_token`,
+        `${AuthApi.url}/4/auth/access_token`,
         {
           method: 'delete',
           headers: { 'Content-type': 'application/json;charset=utf-8', Authorization: `Bearer ${process.env.apiV4Key}` },

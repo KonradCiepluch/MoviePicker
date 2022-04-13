@@ -15,17 +15,17 @@ const fetcher = async <T>(url: string, errorReturnValue: [] | {} = []) => {
   }
 };
 
-class MoviesResouce {
+class MoviesResource {
   private static url = 'https://api.themoviedb.org/3';
 
-  static getPopularMovies = () => fetcher<IMovie[]>(`${this.url}/movie/popular?api_key=${process.env.apiKey}`);
+  static getPopularMovies = () => fetcher<IMovie[]>(`${MoviesResource.url}/movie/popular?api_key=${process.env.apiKey}`);
 
-  static getMoviesByQuery = (query: string) => fetcher<IMovie[]>(`${this.url}/search/movie?api_key=${process.env.apiKey}&query=${query}`);
+  static getMoviesByQuery = (query: string) => fetcher<IMovie[]>(`${MoviesResource.url}/search/movie?api_key=${process.env.apiKey}&query=${query}`);
 
   static getMovieDetails = (movieId: string | string[]) => {
     const id = Array.isArray(movieId) ? movieId[0] : movieId;
-    return fetcher<IMovie>(`${this.url}/movie/${id}?api_key=${process.env.apiKey}`, {});
+    return fetcher<IMovie>(`${MoviesResource.url}/movie/${id}?api_key=${process.env.apiKey}`, {});
   };
 }
 
-export default MoviesResouce;
+export default MoviesResource;
