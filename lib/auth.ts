@@ -25,8 +25,9 @@ class AuthApi {
     const link = document.createElement('a');
     document.body.appendChild(link);
     link.style.display = 'none';
-    link.href = url;
     link.target = '_blank';
+    link.rel = 'noreferrer';
+    link.href = url;
     link.click();
     document.body.removeChild(link);
   };
