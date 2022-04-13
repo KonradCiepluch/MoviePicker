@@ -32,7 +32,7 @@ const Layout = ({ children }: Props) => {
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"></link>
       </Head>
       <Navigation>
-        <h1>Netflix Picker</h1>
+        <h1>Movie Picker</h1>
         <ul>{links}</ul>
         {authenticatedUser ? (
           <UserWidget name={authenticatedUser.username} handleSignOut={handleSignOut} />
