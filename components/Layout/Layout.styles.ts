@@ -31,6 +31,7 @@ const Navigation = styled.nav`
 
     font-weight: 500;
     background-color: transparent;
+    color: black;
 
     transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
     cursor: pointer;
