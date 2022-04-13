@@ -21,6 +21,16 @@ const fetcher = async (url: string, options: IRequestOptions, errorMessage: stri
 class AuthApi {
   private static url = 'https://api.themoviedb.org';
 
+  private static openTabWithUrl = (url: string) => {
+    const link = document.createElement('a');
+    document.body.appendChild(link);
+    link.style.display = 'none';
+    link.href = url;
+    link.target = '_blank';
+    link.click();
+    document.body.removeChild(link);
+  };
+
   private static getRequestToken = async () => {
     const { request_token: reqToken } = await fetcher(
       `${AuthApi.url}/4/auth/request_token`,
@@ -31,7 +41,7 @@ class AuthApi {
       'Unable to get request token'
     );
 
-    window.open(`https://www.themoviedb.org/auth/access?request_token=${reqToken}`, '_blank').focus();
+    AuthApi.openTabWithUrl(`https://www.themoviedb.org/auth/access?request_token=${reqToken}`);
 
     return reqToken;
   };
